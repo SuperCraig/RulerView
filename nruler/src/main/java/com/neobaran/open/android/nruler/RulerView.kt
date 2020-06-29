@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.text.Layout
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import android.widget.Scroller
 import androidx.appcompat.widget.TintTypedArray
@@ -34,6 +35,7 @@ class RulerView @JvmOverloads constructor(
 
 
     private val mLinePaint = Paint()
+    private val mCenterPaint = Paint()
     private val mTextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     private val minViewHeight: Float
@@ -58,6 +60,8 @@ class RulerView @JvmOverloads constructor(
     private var digits: Int = 0
     private var mMaxValue = 100
     private var mMinValue = 0
+
+    private var mDefaultValue = 60
 
     private var numShow = 41
     private var unitStr = ""
@@ -94,6 +98,8 @@ class RulerView @JvmOverloads constructor(
                 digits = getInt(R.styleable.RulerView_numDigits, 0)
                 mMaxValue = getInt(R.styleable.RulerView_numMaxValue, 100)
                 mMinValue = getInt(R.styleable.RulerView_numMinValue, 0)
+                mDefaultValue = getInt(R.styleable.RulerView_numDefaultValue, 0)
+
                 numShow = getInt(R.styleable.RulerView_numShow, 41)
 
                 centerLineWidth = getDimension(R.styleable.RulerView_centerLineWidth, 6f)
@@ -132,6 +138,9 @@ class RulerView @JvmOverloads constructor(
         minViewHeight = textHeight + centerLineHeight + textSpaceHeight + paddingTop + paddingBottom
 
         mLinePaint.strokeCap = Paint.Cap.ROUND
+        mCenterPaint.strokeCap = Paint.Cap.ROUND
+        mCenterPaint.color = centerLineColor
+        mCenterPaint.strokeWidth = centerLineWidth
     }
 
     private fun getDigitsHelp(): Int {
@@ -166,6 +175,15 @@ class RulerView @JvmOverloads constructor(
         return (mValue.toDouble() / 10.0.pow(digits.toDouble())).nFormat(digits).toFloat()
     }
 
+    fun setDefaultValue(defaultValue: Int) {
+        mDefaultValue = defaultValue
+        invalidate()
+    }
+
+    fun getDefaultValue(): Int {
+        return mDefaultValue
+    }
+
     fun setUnitStr(str: String) {
         unitStr = str
         invalidate()
@@ -180,7 +198,10 @@ class RulerView @JvmOverloads constructor(
         mWidgetHeight = height
         mWidgetWidth = width
         perWidth = mWidgetWidth / numShow.toFloat()
+
         super.onLayout(changed, left, top, right, bottom)
+
+        Log.i("RulerView", "mWidgetHeight: $mWidgetHeight, centerLineHeight: $centerLineHeight, sideLineHeight: $sideLineHeight")
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -194,24 +215,24 @@ class RulerView @JvmOverloads constructor(
         val centerPosition = mWidgetWidth / 2F
         var xPosition: Float
 
+        val textWidth = Layout.getDesiredWidth(getShowNumber(mValue), mTextPaint)
+        val yPosition: Float = (canvas.height / 2) - ((mTextPaint.descent() + mTextPaint.ascent()) / 2)
+
+        Log.i("RulerView", "canvas width: ${canvas.width} x canvas height: ${canvas.height}")
+        Log.i("RulerView", "numShow: $numShow, mMove: $mMove")
+
         for (i in 0..(numShow + 2)) {
 
-            with(mLinePaint) {
-                if (i < 4) {
-                    color = centerLineColor
-                    strokeWidth = centerLineWidth
-                    alpha = 255
-                } else {
-                    color = sideLineColor
-                    strokeWidth = sideLineWidth
-                    alpha = (260 - 255.toFloat() * (i.toFloat() / numShow.toFloat() * 2f)).toInt()
-                }
-            }
+//            val lineHeight = getSpaceHeight(i)
+            val lineHeight = (mWidgetHeight - centerLineHeight) + 0.8f * (centerLineHeight - sideLineHeight)
 
+//            if (i == 0 && mValue % 10 == 0) {
+//                mTextPaint.color = centerLineColor
+//            } else {
+//                mTextPaint.color = numTextColor
+//            }
 
-            val lineHeight = getSpaceHeight(i)
-
-            if (i == 0 && mValue % 10 == 0) {
+            if (mValue == mDefaultValue) {
                 mTextPaint.color = centerLineColor
             } else {
                 mTextPaint.color = numTextColor
@@ -221,44 +242,53 @@ class RulerView @JvmOverloads constructor(
             if (xPosition + paddingEnd < mWidgetWidth && mValue + i <= mMaxValue) {
                 drawLine(
                     xPosition,
-                    lineHeight,
+                    yPosition / 1.3f,
                     xPosition,
                     mWidgetHeight.toFloat() - paddingBottom,
                     mLinePaint
                 )
-                if ((mValue + i) % 10 == 0) {
-                    val textWidth = Layout.getDesiredWidth(getShowNumber(mValue + i), mTextPaint)
-                    drawText(
-                        getShowNumber(mValue + i),
-                        xPosition - textWidth / 2f,
-                        textHeight,
-                        mTextPaint
-                    )
+                if ((mValue + i) == mDefaultValue) {
+                    drawCircle(xPosition, yPosition * 0.3f, 20.0f, mTextPaint)
                 }
-            }
 
+//                if ((mValue + i) % 10 == 0) {
+//                    val textWidth = Layout.getDesiredWidth(getShowNumber(mValue + i), mTextPaint)
+//                    drawText(
+//                        getShowNumber(mValue + i),
+//                        xPosition - textWidth / 2f,
+//                        textHeight,
+//                        mTextPaint
+//                    )
+//                }
+            }
 
             xPosition = centerPosition - i * perWidth - mMove
             if (xPosition > paddingStart && mValue - i >= mMinValue) {
                 drawLine(
                     xPosition,
-                    lineHeight,
+                    yPosition / 1.3f,
                     xPosition,
                     mWidgetHeight.toFloat() - paddingBottom,
                     mLinePaint
                 )
-                if ((mValue - i) % 10 == 0) {
-                    val textWidth = Layout.getDesiredWidth(getShowNumber(mValue + i), mTextPaint)
-                    drawText(
-                        getShowNumber(mValue - i),
-                        xPosition - textWidth / 2f,
-                        textHeight,
-                        mTextPaint
-                    )
+                if ((mValue - i) == mDefaultValue) {
+                    drawCircle(xPosition, yPosition * 0.3f, 20.0f, mTextPaint)
                 }
-            }
 
+//                if ((mValue - i) % 10 == 0) {
+//                    val textWidth = Layout.getDesiredWidth(getShowNumber(mValue + i), mTextPaint)
+//                    drawText(
+//                        getShowNumber(mValue - i),
+//                        xPosition - textWidth / 2f,
+//                        textHeight,
+//                        mTextPaint
+//                    )
+//                }
+            }
         }
+
+
+        drawLine(centerPosition, 0f, centerPosition, height.toFloat(), mCenterPaint)       //center stroke
         restore()
     }
 
@@ -275,6 +305,7 @@ class RulerView @JvmOverloads constructor(
             1 -> (mWidgetHeight - centerLineHeight) + 0.4f * (centerLineHeight - sideLineHeight)
             2 -> (mWidgetHeight - centerLineHeight) + 0.6f * (centerLineHeight - sideLineHeight)
             3 -> (mWidgetHeight - centerLineHeight) + 0.8f * (centerLineHeight - sideLineHeight)
+//            4 -> (centerLineHeight - sideLineHeight)
             else -> mWidgetHeight - sideLineHeight
         }
     }

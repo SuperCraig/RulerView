@@ -8,7 +8,6 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
-
     <TextView
             android:id="@+id/height_number"
             android:layout_width="wrap_content"
@@ -17,88 +16,99 @@
             android:textSize="18sp"
             android:layout_marginTop="12dp"
             android:layout_gravity="center_horizontal"
-            android:text="103"
+            android:text=" "
     />
 
-    <LinearLayout
-            android:id="@+id/height_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            android:background="@drawable/ic_round_bg"
-    >
-
-        <com.neobaran.open.android.nruler.RulerView
-                android:id="@+id/height_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="4dp"
-                app:numDigits="0"
-                app:numValue="80"
-                app:numMinValue="40"
-                app:numMaxValue="250"
-                app:numTextColor="@color/secondary_text"
-                app:textSize="12sp"
-                app:textSpaceHeight="6dp"
-                app:centerLineColor="#f24b16"
-                app:sideLineColor="#bcbcbc"
-                app:centerLineHeight="16dp"
-                app:sideLineHeight="8dp"
-                app:unitStr="cm"
+    <com.neobaran.open.android.nruler.RulerView
+        android:id="@+id/height_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="4dp"
+        app:numShow="8"
+        app:numDigits="0"
+        app:numValue="4"
+        app:numMinValue="0"
+        app:numMaxValue="8"
+        app:numDefaultValue="4"
+        app:numTextColor="@color/secondary_text"
+        app:textSize="12sp"
+        app:textSpaceHeight="6dp"
+        app:centerLineColor="#f24b16"
+        app:sideLineColor="#bcbcbc"
+        app:centerLineHeight="16dp"
+        app:sideLineHeight="8dp"
         />
 
-    </LinearLayout>
-
     <TextView
-            android:id="@+id/weight_number"
+            android:id="@+id/tv_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_high"
             android:textSize="18sp"
             android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"
-            android:text="103.5kg"
+            android:text=" "
     />
 
-    <LinearLayout
-            android:id="@+id/weight_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            android:background="@drawable/ic_round_bg"
-    >
-
-        <com.neobaran.open.android.nruler.RulerView
-                android:id="@+id/weight_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="4dp"
-                app:numDigits="1"
-                app:numValue="80"
-                app:numMinValue="5"
-                app:numMaxValue="300"
-                app:numTextColor="@color/secondary_text"
-                app:textSize="12sp"
-                app:textSpaceHeight="6dp"
-                app:centerLineColor="#f24b16"
-                app:sideLineColor="#bcbcbc"
-                app:centerLineHeight="16dp"
-                app:sideLineHeight="8dp"
+    <com.neobaran.open.android.nruler.RulerView
+        android:id="@+id/tv_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="4dp"
+        app:numShow="15"
+        app:numDigits="0"
+        app:numValue="15"
+        app:numMinValue="0"
+        app:numMaxValue="30"
+        app:numDefaultValue="15"
+        app:numTextColor="@color/secondary_text"
+        app:textSize="12sp"
+        app:textSpaceHeight="6dp"
+        app:centerLineColor="#f24b16"
+        app:sideLineColor="#bcbcbc"
+        app:centerLineHeight="16dp"
+        app:sideLineHeight="8dp"
         />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/iso_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color_high"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:text=" "
+        />
+
+    <com.neobaran.open.android.nruler.RulerView
+        android:id="@+id/iso_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="4dp"
+        app:numShow="7"
+        app:numDigits="0"
+        app:numValue="8"
+        app:numMinValue="0"
+        app:numMaxValue="15"
+        app:numDefaultValue="8"
+        app:numTextColor="@color/secondary_text"
+        app:textSize="12sp"
+        app:textSpaceHeight="6dp"
+        app:centerLineColor="#f24b16"
+        app:sideLineColor="#bcbcbc"
+        app:centerLineHeight="16dp"
+        app:sideLineHeight="8dp"
+        />
 
 
 </LinearLayout>

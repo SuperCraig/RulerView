@@ -8,6 +8,8 @@
         <attr name="numDigits" format="integer"/>
         <attr name="numMaxValue" format="integer"/>
         <attr name="numMinValue" format="integer"/>
+        <attr name="numDefaultValue" format="integer"/>
+
         <attr name="numValue" format="integer"/>
         <attr name="numShow" format="integer"/>
 
